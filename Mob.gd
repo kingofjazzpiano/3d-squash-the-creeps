@@ -1,8 +1,9 @@
 extends KinematicBody
 
-export var min_speed = 10.0
-export var max_speed = 18.0
+signal squashed
 
+export var min_speed = 5.0
+export var max_speed = 10.0
 var velocity = Vector3.ZERO
 
 
@@ -18,6 +19,13 @@ func initialize(start_position, player_position):
 	var random_speed = rand_range(min_speed, max_speed)
 	velocity = Vector3.FORWARD * random_speed
 	velocity = velocity.rotated(Vector3.UP, rotation.y)
+
+	$AnimationPlayer.playback_speed = random_speed / min_speed
+
+
+func squash():
+	emit_signal("squashed")
+	queue_free()
 
 
 func _on_VisibilityNotifier_screen_exited():
